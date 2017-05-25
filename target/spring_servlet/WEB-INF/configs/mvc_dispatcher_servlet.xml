@@ -10,8 +10,13 @@
     <context:component-scan base-package="com.zero.spring.controller">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
-    <!-- 开启注解 -->
+    <!-- 扩充了注解驱动，可以将请求参数绑定到控制器参数-->
     <mvc:annotation-driven/>
+    <!-- 静态资源(js、image等)的访问 -->
+    <!--<mvc:default-servlet-handler/>-->
+    <!--静态资源处理 css，js，imgs-->
+    <!--<mvc:resources mapping="/resources/**" location="/resources/"/>-->
+
     <!--ViewResolver 视图解析器-->
     <!--用于支持Servlet、JSP视图解析-->
     <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">

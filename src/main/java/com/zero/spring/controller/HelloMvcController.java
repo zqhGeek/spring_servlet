@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Created by zqh on 2017/5/24.
  */
 @Controller
+@RequestMapping(value = "/hello")
 public class HelloMvcController {
-    @RequestMapping("/mvc")
+    @RequestMapping(value = "/mvc")
     public String helloMvc() {
         return "hello_mvc";
     }

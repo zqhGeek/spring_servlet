@@ -3,15 +3,22 @@ package com.zero.spring.controller;
 import com.zero.spring.model.Chapter;
 import com.zero.spring.model.Course;
 import com.zero.spring.service.CourseService;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +29,8 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/course")
 public class CourseController {
+
+    @Resource
     private CourseService courseService;
     //    private static Logger logger =  LogManager.getLogger("HelloWorld");
     private static final Logger LOGGER = Logger.getLogger(CourseController.class);
@@ -48,10 +57,10 @@ public class CourseController {
         return course;
     }
 
-    @Autowired
-    public void setCourseService(CourseService courseService) {
-        this.courseService = courseService;
-    }
+//    @Autowired
+//    public void setCourseService(CourseService courseService) {
+//        this.courseService = courseService;
+//    }
 
     //处理根路径/course/search?id=123
     @RequestMapping(value = "/search", method = RequestMethod.GET)
@@ -85,4 +94,33 @@ public class CourseController {
         course.setCourseId(123);
         return "redirect:searchId/" + course.getCourseId();
     }
+
+    @RequestMapping(value = "/upload", method = RequestMethod.GET)
+    public String showUploadJsp() {
+        return "course_admin/file";
+    }
+
+    @RequestMapping(value = "/doUpload", method = RequestMethod.POST)
+    public String doUploadFile(@RequestParam("file") MultipartFile file) throws IOException {
+        if (!file.isEmpty()) {
+            LOGGER.debug("处理文件复制");
+            FileUtils.copyInputStreamToFile(file.getInputStream(),new File("D:\\",System.currentTimeMillis()+file.getOriginalFilename()));
+        }
+        return "success";
+    }
+
+    @RequestMapping(value = "/json/{courseId}", method = RequestMethod.GET)
+    public @ResponseBody
+    Course getCourseInJson(@PathVariable("courseId") Integer course_id) {
+        LOGGER.debug("通过Id查询，返回Json");
+        return courseService.getCoursebyId(course_id);
+    }
+
+    @RequestMapping(value = "/jsontype/{coueseId}", method = RequestMethod.GET)
+    public ResponseEntity<Course> getCourseReturnJson(@PathVariable("coueseId") Integer couese_id) {
+        LOGGER.debug("通过Id查询，返回Json,方式二");
+        Course course = courseService.getCoursebyId(couese_id);
+        return new ResponseEntity<>(course, HttpStatus.OK);
+    }
 }
+

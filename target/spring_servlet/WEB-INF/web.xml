@@ -39,6 +39,12 @@
             <param-value>/WEB-INF/configs/mvc_dispatcher_servlet.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
+        <multipart-config>
+            <!--<location>/tmp</location>&lt;!&ndash;既是保存路径(在写入的时候，可以忽略路径设定)，又是上传过程中临时文件的保存路径，一旦执行write方法之后，临时文件将被自动清除。&ndash;&gt;-->
+            <max-file-size>20848820</max-file-size><!--允许上传的文件最大值。默认值为 -1，表示没有限制。-->
+            <max-request-size>418018841</max-request-size><!--针对该 multipart/form-data 请求的最大数量，默认值为 -1，表示没有限制。-->
+            <file-size-threshold>1048576</file-size-threshold><!--当数据量大于该值时，内容将被写入文件，默认值为0bytes-->
+        </multipart-config>
     </servlet>
     <servlet-mapping>
         <servlet-name>mvc_dispatcher</servlet-name>

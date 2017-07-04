@@ -71,6 +71,7 @@ public class CourseController {
         return "course_overview";
     }
 
+    //处理根路径/course/search/id=123
     @RequestMapping(value = "/searchId/{id}", method = RequestMethod.GET)
     public String viewCourse(@PathVariable("id") Integer course_id, Map<String, Object> model) {
         LOGGER.debug("course_id" + course_id);

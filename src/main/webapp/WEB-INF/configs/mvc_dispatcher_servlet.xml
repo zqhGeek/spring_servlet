@@ -12,6 +12,13 @@
     </context:component-scan>
     <!-- 扩充了注解驱动，可以将请求参数绑定到控制器参数-->
     <mvc:annotation-driven/>
+    <!--注册拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/hello/interceptor"/>
+            <bean class="com.zero.spring.interceptor.HelloInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
     <!-- 静态资源(js、image等)的访问 -->
     <!--<mvc:default-servlet-handler/>-->
     <!--静态资源处理 css，js，imgs-->

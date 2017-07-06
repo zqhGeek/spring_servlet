@@ -1,5 +1,10 @@
 package com.zero.spring.interceptor;
 
+import cn.yiban.open.Authorize;
+import cn.yiban.open.FrameUtil;
+import cn.yiban.util.AESDecoder;
+import com.google.gson.reflect.TypeToken;
+import com.zero.spring.util.AESTool;
 import org.apache.log4j.Logger;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,6 +29,19 @@ public class HelloInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         LOGGER.debug("执行到preHandle");
+        String parameter = httpServletRequest.getParameter("verify_request");
+        LOGGER.debug(parameter);
+//        AESTool.decrypt(AESTool.parseHexStr2Byte(parameter), "4b5377df59d2cbcf58cef91ad2164509", "5b0ceae46e9bbe1e");
+//        Authorize au = new Authorize("5b0ceae46e9bbe1e",  "4b5377df59d2cbcf58cef91ad2164509");
+//        String url = au.forwardurl("http://f.yiban.cn/iapp120697", "test", Authorize.DISPLAY_TAG_T.WEB);
+//        httpServletResponse.sendRedirect(url);
+//        FrameUtil frameUtil = new FrameUtil(httpServletRequest,httpServletResponse,"5b0ceae46e9bbe1e","4b5377df59d2cbcf58cef91ad2164509","http://f.yiban.cn/iapp120697");
+//        boolean perform = frameUtil.perform();
+//        LOGGER.debug(perform);
+        String result = AESDecoder.dec(parameter,"4b5377df59d2cbcf58cef91ad2164509","5b0ceae46e9bbe1e");
+//        TypeToken<res>
+//        String decryptString = AESTool.aesDecryptString(AESTool.parseHexStr2Byte(parameter), "4b5377df59d2cbcf58cef91ad2164509", "5b0ceae46e9bbe1e");
+//        LOGGER.debug(decryptString);
         return true;
     }
 
